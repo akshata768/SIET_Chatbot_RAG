@@ -1,13 +1,14 @@
 
-import faiss  # Used for similarity search
-import numpy as np  # Used for numerical operations
-from groq import Groq  # Connects to Groq LLM
-from pypdf import PdfReader  # Reads PDF files
-from sentence_transformers import SentenceTransformer  # Generates text embeddings
+import faiss
+import numpy as np
+from groq import Groq
+from pypdf import PdfReader
+from sentence_transformers import SentenceTransformer
 
 
 # 1. LOAD PDF
 def load_pdf(pdf_path):
+
     reader = PdfReader(str(pdf_path))
 
     pages = [
@@ -18,7 +19,7 @@ def load_pdf(pdf_path):
     full_text = "\n".join(pages).strip()
 
     if not full_text:
-        raise ValueError("No readable text found")
+        raise ValueError("No readable text found in the PDF")
 
     return full_text
 
@@ -29,7 +30,11 @@ def create_chunks(full_text, chunk_size=500, overlap=100):
     chunks = []
     start = 0
 
+    if chunk_size <= 0 or overlap < 0 or overlap >= chunk_size:
+        raise ValueError("Invalid chunk size or overlap")
+
     while start < len(full_text):
+
         end = start + chunk_size
 
         chunk = full_text[start:end]
@@ -46,7 +51,7 @@ def create_chunks(full_text, chunk_size=500, overlap=100):
 def build_vectors(chunks, model_name="all-MiniLM-L6-v2"):
 
     if not chunks:
-        raise ValueError("Cannot apply embedding on empty chunks")
+        raise ValueError("Cannot create embeddings from empty chunks")
 
     embed_model = SentenceTransformer(model_name)
 
@@ -85,10 +90,10 @@ def load_base(pdf_path="01_College_Information.pdf"):
 def retrieve_content(question, embed_model, chunks, index, num_chunks=3):
 
     if not question.strip():
-        raise ValueError("Question cannot be blank")
+        raise ValueError("Question cannot be empty")
 
     if num_chunks < 1:
-        raise ValueError("Request at least one chunk")
+        raise ValueError("At least one chunk must be requested")
 
     query_vector = embed_model.encode(
         [question],
