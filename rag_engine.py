@@ -1,4 +1,3 @@
-
 import streamlit as st
 import faiss
 import numpy as np
