@@ -1,4 +1,4 @@
-import streamli as st
+import streamlit as st
 from rag_engine import load_base, ask_rag
 st.set_page_config(page_title = "SIET_Chatbot", layout = "centered")
 st.title("Shridevi Institute of Engineering and Technology - Chatbot")
@@ -36,6 +36,6 @@ if question:
     
 if st.button("Clear chat"):
   st.session_state.chat_hist =[]
-  st.return()
+  st.rerun()
     
     
