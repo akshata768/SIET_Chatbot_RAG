@@ -14,7 +14,7 @@ def load_pdf (pdf_path):
   return full_text
 
 #chunking
-def create_Chunks(full_text, chunksize = 500, overlap=100):
+def create_chunks(full_text, chunksize = 500, overlap=100):
   chunks = []
   start = 0
   while start<len(full_text):       #0<1000           400<1000         800<1000
