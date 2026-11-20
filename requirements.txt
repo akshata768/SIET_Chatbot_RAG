@@ -1,0 +1,11 @@
+streamlit
+pypdf
+sentance-transformer
+faiss-cpu
+groq
+numpy
+
+
+
+
+
